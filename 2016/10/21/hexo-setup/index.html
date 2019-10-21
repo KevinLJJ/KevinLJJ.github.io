@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="精简教程：Hexo+GitPage搭建个人博客"><meta name="keywords" content="hexo"><meta name="author" content="Kevin"><meta name="copyright" content="Kevin"><title>精简教程：Hexo+GitPage搭建个人博客 | WHILE.RUN</title><link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+} </script></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本步骤"><span class="toc-number">1.</span> <span class="toc-text">基本步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册GitHub并创建仓库"><span class="toc-number">2.</span> <span class="toc-text">注册GitHub并创建仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装部署环境"><span class="toc-number">3.</span> <span class="toc-text">安装部署环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo以及npm的安装与配置"><span class="toc-number">4.</span> <span class="toc-text">Hexo以及npm的安装与配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo与GitHub仓库的连接"><span class="toc-number">5.</span> <span class="toc-text">Hexo与GitHub仓库的连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#页面部署以及文章发布"><span class="toc-number">6.</span> <span class="toc-text">页面部署以及文章发布</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">Kevin</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">14</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">5</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/site/top.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">WHILE.RUN</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">精简教程：Hexo+GitPage搭建个人博客</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2016-10-21</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><blockquote>
+<p>几个月前，在几乎还是对GitHub一无所知的情况下用Hexo搭建博客，找过很多的教程，但是都在中途因为不知何起的报错而结束，或是步骤，或是教程不匹配。网上存在的教程要么复杂不适合入门，要么就是过于啰嗦。东拼西凑，于是写了这篇精简步骤。</p>
+</blockquote>
+<h2 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h2><ol>
+<li>注册GitHub并创建仓库。</li>
+<li>安装部署环境。</li>
+<li>Hexo以及npm的安装与配置。</li>
+<li>Hexo与GitHub仓库的连接。</li>
+<li>页面部署以及文章发布。</li>
+<li>主题更改。</li>
+</ol>
+<hr>
+<h2 id="注册GitHub并创建仓库"><a href="#注册GitHub并创建仓库" class="headerlink" title="注册GitHub并创建仓库"></a>注册GitHub并创建仓库</h2><ol>
+<li>打开<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a> 点击sign up注册自己的GitHub账号，依次输入用户名、邮箱、密码，并且牢记这三项信息。Step2与Step3可按照自身实际情况输入，点击Creat来创建。</li>
+<li>当创建完毕后会提醒新建一个工程，但此时邮箱未验证，不能创建工程，点击“Start a project”根据步骤验证邮箱。</li>
+<li>新建一个Repository（仓库），<strong>切记Repository name应按照 XXXX.github.io的形式</strong>,其他选项保持默认，至此，拥有一个空仓库的github账号就创建完成了。</li>
+</ol>
+<h2 id="安装部署环境"><a href="#安装部署环境" class="headerlink" title="安装部署环境"></a>安装部署环境</h2><p>这里说的环境是指 安装<code>node</code>和<code>Git</code>，Unix发行版本自带git,但是node需要手动安装。<br>环境安装中所有选项均为默认选项，无需更改。安装完成后</p>
+<h2 id="Hexo以及npm的安装与配置"><a href="#Hexo以及npm的安装与配置" class="headerlink" title="Hexo以及npm的安装与配置"></a>Hexo以及npm的安装与配置</h2><p>在喜欢的目录下创建BLOG文件夹，并在目录下执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<p>等待install完毕后继续输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo --save</span><br></pre></td></tr></table></figure>
+<p>这个命令执行时间较长，耐心等待绿色用户名出来以后再进行下一步操作</p>
+<p>下一步输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
+<p>如果出现相应版本信息，说明hexo部署成功。</p>
+<hr>
+<p>接下来对Hexo进行操作<br>1.初始化Hexo，命令结束后，你所在的BLOG文件夹会有相关配置文件生成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>2.安装npm组件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>3.开始部署本地静态页面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>4.本地服务器预览</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>会出现<code>INFO Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</code><br>然后在浏览器中输入localhost:4000就能预览到默认的Hexo主题。</p>
+<hr>
+<h2 id="Hexo与GitHub仓库的连接"><a href="#Hexo与GitHub仓库的连接" class="headerlink" title="Hexo与GitHub仓库的连接"></a>Hexo与GitHub仓库的连接</h2><blockquote>
+<p>本地与GitHub仓库的连接是重点也是最容易出错的点，所以在这个部分务必按照步骤来。</p>
+</blockquote>
+<ol>
+<li><p>打开选好的BLOG文件夹，其根目录下有_config.yml配置文件，此为博客配置文件。用文本编辑器打开将最后改为：</p>
+ <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span> </span><br><span class="line"><span class="attr">    type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">    repository:</span> <span class="attr">https://github.com/username/username.github.io.git</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>倒数第二行的repository是自己仓库地址，切记要在仓库地址后添加.git</p>
+</blockquote>
+</li>
+<li><p>在控制台设置自己的用户名和邮箱</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"username"</span></span><br><span class="line">git config --global user.email <span class="string">"example@mail.com"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成密钥</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"example@mail.com"</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这一步需要连续输按3次回车以设置空密码</p>
+</blockquote>
+</li>
+<li><p>将密钥粘贴到GitHub Setting.</p>
+<ul>
+<li>密钥默认的生成路径为<code>C:\Users\用户名\.ssh</code>文件夹(Unix系统位于<code>~/.ssh</code>)，将此文件夹下<code>id_rsa.pub</code>以文本文档形式打开并复制。</li>
+</ul>
+<ul>
+<li>登陆GitHub，个人中心点Setting，左侧SSH and GPG keys，然后右侧新建一个SSH key，将刚才复制的密钥粘贴到Key框，点击Add SSH key以保存。</li>
+</ul>
+</li>
+<li><p>为仓库开启GitPages</p>
+<p> 打开自己的仓库，点击仓库中的setting,下滑Choose a theme 随便select一个主题布局，并保存。</p>
+</li>
+<li><p>测试本机与GitHub的连接</p>
+<p> 控制台输入</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p> 如果显示:<br> <code>Hi XXXX! You’ve successfully authenticated, but GitHub does not provide shell access.</code></p>
+<p> 说明配置连接正常</p>
+</li>
+<li><p>安装npm的发布拓展（Git控制台）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>耐心等跑完，部署阶段就到此完成。</p>
+</li>
+</ol>
+<h2 id="页面部署以及文章发布"><a href="#页面部署以及文章发布" class="headerlink" title="页面部署以及文章发布"></a>页面部署以及文章发布</h2><ol>
+<li><p>部署本地静态页面</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地服务器预览页面</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确认无误后发布页面</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解释一下hexo常用命令含义</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo n <span class="string">"title"</span>	    // n=new 新建一篇文章</span><br><span class="line">hexo g				// g=generate 本地部署生成</span><br><span class="line">hexo s				// s=server 可以在localhost预览</span><br><span class="line">hexo d				// d=deploy 发布至GitHub</span><br><span class="line">hexo -v		        // v=version 显示hexo版本信息</span><br></pre></td></tr></table></figure></li>
+</ol>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Kevin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://while.run/2016/10/21/hexo-setup/">https://while.run/2016/10/21/hexo-setup/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://while.run">WHILE.RUN</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hexo/">hexo</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/08/21/sim800c/"><i class="fa fa-chevron-left">  </i><span>SIM800C 使用GPRS与远程服务器进行串口通讯</span></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(/img/site/foot.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2018 - 2019 By Kevin</div><div class="framework-info"><span>驱动 - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="黑群晖教程：（二）黑群晖安装DSM6.1x（图文）"><meta name="keywords" content="网络存储"><meta name="author" content="Kevin"><meta name="copyright" content="Kevin"><title>黑群晖教程：（二）黑群晖安装DSM6.1x（图文） | WHILE.RUN</title><link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+} </script></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#修改引导配置"><span class="toc-number">1.</span> <span class="toc-text">修改引导配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进入BIOS将U盘设为第一启动项"><span class="toc-number">2.</span> <span class="toc-text">进入BIOS将U盘设为第一启动项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装DSM"><span class="toc-number">3.</span> <span class="toc-text">安装DSM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关闭自动更新"><span class="toc-number">4.</span> <span class="toc-text">关闭自动更新</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">Kevin</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">14</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">5</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/site/top.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">WHILE.RUN</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">黑群晖教程：（二）黑群晖安装DSM6.1x（图文）</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2019-01-14</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>接上篇<a href="https://blog.csdn.net/qq_36169781/article/details/86482058" target="_blank" rel="noopener">黑群晖搭建指南—（一）硬件选择</a></p>
+<blockquote>
+<p>如果你没有使用上篇博客的硬件可不可以呢？当然是可以的，任何一台64位的旧电脑都可以作为黑群晖的载体。只需要注意DSM 6.x的引导需要支持UEFI引导的主板，如果主板仅支持Legacy请安装DSM5.x（这篇教程不适合DSM5.x）。<br>另外，博客中所说的 <strong>NAS、黑群晖、群晖</strong> 都指的是你<strong>要做黑群晖的旧设备</strong>。</p>
+</blockquote>
+<p><strong>准备U盘一个</strong>，容量<strong>512M足矣</strong>，USB2.0也可以，作为引导系统盘（下面的synoboot一会儿要刻到这个盘里）。<br><strong>自己能上网的电脑一台</strong>，配置黑群晖要用，必须和黑群晖处于同一局域网<br><strong>黑群晖机器一台</strong><br><strong>准备文件</strong>：<a href="http://nas.jaron.tech:5000/sharing/dDP1Drxl0" target="_blank" rel="noopener">点此下载</a>密码：jaron</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>文件名</th>
+<th>文件描述</th>
+<th>SHA1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>DSM_DS3617xs_15284.pat</td>
+<td>DSM系统镜像</td>
+<td>2E53A3B157A645054C24177217D51A86441FAB81</td>
+</tr>
+<tr>
+<td>2</td>
+<td>synoboot.img</td>
+<td>黑群晖引导</td>
+<td>B7DA666184B19C53361F433B4582E53B779D7F85</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ChipGenius_v4-芯片精灵 .exe</td>
+<td>查看U盘VID和PID</td>
+<td>F1779AD8E2907819A4CF54B54F8496A3A562208A</td>
+</tr>
+<tr>
+<td>4</td>
+<td>osfmount</td>
+<td>修改引导配置</td>
+<td>7A2387F02B4B9A4F290FE1B9A357C49ABF22546A</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Win32DiskImager.zip</td>
+<td>把黑群晖引导刻录到U盘</td>
+<td>0261A543567E296F37D658F131F72CE022CF0660</td>
+</tr>
+</tbody></table>
+<h2 id="修改引导配置"><a href="#修改引导配置" class="headerlink" title="修改引导配置"></a>修改引导配置</h2><ol>
+<li><p>插入U盘，打开芯片精灵，查看U盘的VID和PID：<br> <img src="https://img-blog.csdnimg.cn/2019011421522275.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt="查看"><br>红框就是VID和PID，记下备用。</p>
+</li>
+<li><p>安装OSFMount，挂载准备好的synoboot.img引导文件<br> <img src="https://img-blog.csdnimg.cn/20190114215946536.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""><br><img src="https://img-blog.csdnimg.cn/20190114220114761.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""><br>PS：选择引导时，引导所在<strong>路径不能包含中文字符</strong>。</p>
+</li>
+<li><p>选择Partition 0，点击OK 确认。<br> <img src="https://img-blog.csdnimg.cn/20190114220244325.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>取消勾选 Read-only Drive<br> <img src="https://img-blog.csdnimg.cn/20190114220500982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>双击打开引导目录<br> <img src="https://img-blog.csdnimg.cn/2019011422072639.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>进入grub文件夹，使用记事本打开grub.cfg文件<br> <img src="https://img-blog.csdnimg.cn/2019011422092290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>修改grub.cfg中VID与PID为上文芯片精灵查询到的结果<br> <img src="https://img-blog.csdnimg.cn/2019011422105045.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set vid=0x058f  //U盘的VID，只用修改0x后面的4位</span><br><span class="line">set pid=0x6387 //U盘的PID，只用修改0x后面的4位</span><br></pre></td></tr></table></figure>
+<p>修改完成后保存当前文件。</p>
+</li>
+<li><p>点击Dismount all &amp; Exit 取消挂载，出现提示点击“是”。<br> <img src="https://img-blog.csdnimg.cn/20190114221620925.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>打开准备好的Win32DiskImager.exe，选择刚修改的synoboot.img引导，注意<strong>路径不要出现中文</strong>，接下来选择插入的U盘，点击写入。<br> <img src="https://img-blog.csdnimg.cn/20190114222232443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+</ol>
+<p>至此，群晖引导盘制作完成，将引导盘插入目标黑群晖上。<br>    <img src="https://img-blog.csdnimg.cn/20190114222651882.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+<h2 id="进入BIOS将U盘设为第一启动项"><a href="#进入BIOS将U盘设为第一启动项" class="headerlink" title="进入BIOS将U盘设为第一启动项"></a>进入BIOS将U盘设为第一启动项</h2><p>进入BIOS将U盘设为第一启动项，这样每次启动设备，才会从U盘加载群晖引导。<br>    <img src="https://img-blog.csdnimg.cn/20190114223402658.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""><br>保存并退出BIOS，机器会自动重启。</p>
+<h2 id="安装DSM"><a href="#安装DSM" class="headerlink" title="安装DSM"></a>安装DSM</h2><ol>
+<li><p>机器重启后，稍等几秒会自动进入GNU GRUB第一项，如果没有自动就第一项回车。<br> <img src="https://img-blog.csdnimg.cn/20190114223606221.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>稍等1分钟，出现如图界面，在自己电脑中浏览器中输入<a href="http://find.synology.com" target="_blank" rel="noopener">http://find.synology.com</a> 将会在局域网中自动发现DSM。</p>
+<blockquote>
+<p>自己的电脑一定要和黑群晖在同一局域网下。</p>
+</blockquote>
+<p> <img src="https://img-blog.csdnimg.cn/20190114223712299.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+<p> <img src="https://img-blog.csdnimg.cn/20190114224406555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>点击“联机”，开始设置你的群晖。</p>
+</li>
+<li><p>安装DiskStation Manager页面，选择手动安装，选择DSM_DS3617xs_15284.pat镜像文件，开始安装。<br> <img src="https://img-blog.csdnimg.cn/20190114224656848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>等进度走完，将会自动重启机器<br><img src="https://img-blog.csdnimg.cn/20190114225039580.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+<li><p>重启后等一分钟，刷新当前页面，设置用户名和密码，第二部设置QuickConnect的时候直接点击“跳过此步骤”。</p>
+</li>
+<li><p>进入NAS桌面，截至目前，整个黑群晖的配置就完成了。<br> <img src="https://img-blog.csdnimg.cn/20190114230113661.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+</li>
+</ol>
+<h2 id="关闭自动更新"><a href="#关闭自动更新" class="headerlink" title="关闭自动更新"></a>关闭自动更新</h2><p>一定要在群晖控制面板中关闭系统的自动更新，否则系统凉凉。<br>不是在更新和还原中关闭，而是需要打开“任务计划”，删除更新的任务：<br>    <img src="https://img-blog.csdnimg.cn/20190114230533997.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTY5Nzgx,size_16,color_FFFFFF,t_70" alt=""></p>
+<p>另外，引导U盘需要一直插在黑群晖上，否则下次断电后开机就不能正常进DSM。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Kevin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://while.run/2019/01/14/nas-2/">https://while.run/2019/01/14/nas-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://while.run">WHILE.RUN</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8/">网络存储</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2019/01/18/nas-3/"><i class="fa fa-chevron-left">  </i><span>黑群晖教程：（三）群晖常用设置与入门</span></a></div><div class="next-post pull-right"><a href="/2019/01/14/nas-1/"><span>黑群晖教程：（一）群晖硬件选择</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(/img/site/foot.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2018 - 2019 By Kevin</div><div class="framework-info"><span>驱动 - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>

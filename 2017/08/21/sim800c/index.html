@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="SIM800C 使用GPRS与远程服务器进行串口通讯"><meta name="keywords" content="物联网硬件"><meta name="author" content="Kevin"><meta name="copyright" content="Kevin"><title>SIM800C 使用GPRS与远程服务器进行串口通讯 | WHILE.RUN</title><link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+} </script></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#模块引脚说明"><span class="toc-number">1.</span> <span class="toc-text">模块引脚说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块与电脑连接"><span class="toc-number">2.</span> <span class="toc-text">模块与电脑连接　##</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块与计算机通信测试"><span class="toc-number">3.</span> <span class="toc-text">模块与计算机通信测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用AT指令集介绍"><span class="toc-number">4.</span> <span class="toc-text">常用AT指令集介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开启公网主机网络端口"><span class="toc-number">5.</span> <span class="toc-text">开启公网主机网络端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SIM800C-建立与服务器的连接"><span class="toc-number">6.</span> <span class="toc-text">SIM800C 建立与服务器的连接</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">Kevin</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">14</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">5</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/site/top.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">WHILE.RUN</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">SIM800C 使用GPRS与远程服务器进行串口通讯</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-21</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>背景：SIM800C模块与服务器建立通讯实现了真正意义上的物联网应用，它突破了WiFi模块只能在固定无线网络范围内的距离局限，或是蓝牙模块的短距离传输瓶颈，我们只需要借助单片机连接GSM模块与电器开关，然后对单片机进行简单的控制逻辑编程。GSM模块只要在有移动网络信号覆盖的环境下就能与控制端进行基于TCP/IP协议的点对点数据传输，从而实现不限距离的远程控制。</p>
+<p>本文介绍SIM800C模块通过GPRS与服务器进行串口通信。</p>
+<p>设备清单：</p>
+<ol>
+<li>USB-TTL调试模块（驱动）；</li>
+<li>SIM800C模块；</li>
+<li>移动或联通SIM卡（可正常访问网络）；</li>
+<li>本地计算机；</li>
+<li>拥有公网IP的远程计算机。</li>
+</ol>
+<blockquote>
+<p>如果没有公网IP，可以在花生壳上付费做地址映射。</p>
+</blockquote>
+<h2 id="模块引脚说明"><a href="#模块引脚说明" class="headerlink" title="模块引脚说明"></a>模块引脚说明</h2><blockquote>
+<p>5V:供电引脚，只能输入DC5V，用于给板子供电。</p>
+</blockquote>
+<blockquote>
+<p>V_TTL:接目标控制板单片机内核电压的5V/3.3V,TTL逻辑</p>
+</blockquote>
+<blockquote>
+<p>GND:电源地线</p>
+<p>TXD:模块串口发送引脚，TTL电平（不能直接接RS232电平）</p>
+<p>RXD:模块串口接收引脚，TTL电平（不能直接接RS232电平）</p>
+<p>DTR:数据终端准备</p>
+<p>SPKP:内核音频输出引脚</p>
+<p>SPKN:内核音频输出引脚</p>
+<p>MICN:内核音频输入引脚</p>
+<p>MICP:内核音频输入引脚</p>
+<p>RI:内核振铃提示引脚</p>
+<p>VRTC:RTC外置电池引脚</p>
+<p>GND:电源地线</p>
+<p>PWX:拉低该引脚可以实现模块的开启或者关闭</p>
+<p>GND:电源地线</p>
+<p>VBAT:锂电池输入引脚。</p>
+</blockquote>
+<h2 id="模块与电脑连接"><a href="#模块与电脑连接" class="headerlink" title="模块与电脑连接　##"></a>模块与电脑连接　##</h2><p>使用USB-TTL连接SIM800C然后插入电脑供电，接线如下</p>
+<blockquote>
+<p>USBTTL   SIM800C<br>5V——-VCC<br>GND——GND<br>TX——-RX<br>RX——-TX</p>
+</blockquote>
+<p>USB-TTL 模块驱动，常用于调试TTL电平的串口信息。市面上常见的有 CP2102/PL2303/CH340等USB-TTL模块，推荐使用CP2102模块，是同类模块中性能最好最稳定的。 </p>
+<p>插入前确保电脑已经安装了USB-TTL调试驱动，在设备管理器中查看对应串口号（COM）</p>
+<p>此时，SIM800C模块电源指示灯常亮，但并不会开始工作，前面的引脚介绍中有PWX引脚，我们需要给PWX引脚一个低电平触发来启动模块，从第一张图中可以看到，我用跳线帽将PWX和GND短接，这样每次通电只需拔下跳线帽再插上就可以启动模块。</p>
+<h2 id="模块与计算机通信测试"><a href="#模块与计算机通信测试" class="headerlink" title="模块与计算机通信测试"></a>模块与计算机通信测试</h2><p>打开串口调试器，选择对应的串口号，波特率建议选择9600，数据位8，停止位1，然后点 “打开串口” 启动串口监听。向COM口发送AT命令。有些串口调试器有“发送新行”功能，一定要勾选上，这样会给每条命令的结尾加上一个换行符，模块才能识别该条命令，由于我用的串口助手没有这个功能，所以我在每条命令的结尾敲一个回车后发送。</p>
+<blockquote>
+<p>模块的波特率可以自适应，即模块上电时候第一个发送的指令是什么波特率，系统会自动识别波特率按照这个波特率返回数据。</p>
+</blockquote>
+<p>发送<br>AT<br>收到回复<br>AT<br>OK<br>SMS Ready</p>
+<p>此时，模块与计算机的通信正常。</p>
+<h2 id="常用AT指令集介绍"><a href="#常用AT指令集介绍" class="headerlink" title="常用AT指令集介绍"></a>常用AT指令集介绍</h2><blockquote>
+<p>AT+CPIN?</p>
+</blockquote>
+<p>该指令用于查询 SIM 卡的状态，如果该指令返回：+CPIN:READY，则表明SIM卡状态正常。 </p>
+<blockquote>
+<p>AT+CSQ</p>
+</blockquote>
+<p>该指令用于查询信号质量，返回 SIM800 模块的接收信号强度，最大有效值是31。</p>
+<blockquote>
+<p>AT+COPS?</p>
+</blockquote>
+<p>该指令用于查询当前运营商，该指令只有在连上网络后，才返回运营商，否则返回空，如返回：+COPS:0,0, “CHINA MOBILE”，表示当前选择的运营商是中国移动。 </p>
+<blockquote>
+<p>AT+CGMI</p>
+</blockquote>
+<p>该指令用于查询模块制造商。</p>
+<blockquote>
+<p>AT+CGMM</p>
+</blockquote>
+<p>该指令用于查询模块型号。</p>
+<blockquote>
+<p>AT+CGSN</p>
+</blockquote>
+<p>该指令用于查询产品序列号（即IMEI号）。</p>
+<blockquote>
+<p>AT+CNUM</p>
+</blockquote>
+<p>该指令用于查询本机号码。不是所有的SIM卡都 支持这个指令。</p>
+<blockquote>
+<p>ATE1</p>
+</blockquote>
+<p>该指令用于设置回显模式（默认开启），即模块将收到的 AT 指令完整的返回给发送端，启用该功能，有利于调试模式。如果不需要开启回显模式，则发送 ATE0 指令即可关闭，这样收 到的指令将不再返回给发送端，这样方便程序控制。 </p>
+<blockquote>
+<p>ATD15002865210;</p>
+</blockquote>
+<p>拨打电话，执行成功后返回ATD:15002865210 OK。</p>
+<h2 id="开启公网主机网络端口"><a href="#开启公网主机网络端口" class="headerlink" title="开启公网主机网络端口"></a>开启公网主机网络端口</h2><p>我们远程登陆前面准备的公网IP主机，cmd命令netstat -a列出所有网络端口。</p>
+<p>找出没有被占用的端口号，这里我选择10005，使用网络调试助手设置协议类型为TCP服务对端口10005进行监听，IP地址默认。</p>
+<p><strong>设置防火墙规则：</strong><br>打开Windows防火墙-&gt;高级设置，增加入站规则-&gt;端口10005-&gt;适用于TCP协议，同时增加10005端口的出站规则。<br>或者直接关闭防火墙。<br>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-dvGIdH5X-1571669887783)(<a href="http://p0dqngcfp.bkt.clouddn.com/18-3-18/57325272.jpg)]" target="_blank" rel="noopener">http://p0dqngcfp.bkt.clouddn.com/18-3-18/57325272.jpg)]</a></p>
+<p>回到我们本地计算机的串口助手，接下来我们要使用串口助手给SIM800C发送指令来建立GPRS连接。<br>下面是我们会用到的GPRS功能指令集与相应功能：</p>
+<blockquote>
+<p>AT+CGCLASS</p>
+</blockquote>
+<p>用于设置移动台类别。SIM800模块仅支持类别”B”和”CC”,发送：AT+CGCLASS=”B”,设置移动台类别为B。即，模块支持包交换和电路交换模式，但不能同时支持。</p>
+<blockquote>
+<p>AT+CGDCONT</p>
+</blockquote>
+<p>用于设置PDP上下文。发送：AT+CGDCONT=1,”IP”,”CMNET”,设置PDP上下文标标志为1，采用互联网协议（IP），接入点为”CMNET”。</p>
+<blockquote>
+<p>AT+CGATT</p>
+</blockquote>
+<p>用于设置附着和分离GPRS业务。发送：AT+CGATT=1,附着GPRS业务。</p>
+<blockquote>
+<p>AT+CIPCSGP</p>
+</blockquote>
+<p>用于设置CSD或GPRS链接模式。发送：AT+CIPCSGP=1，”CMNET”，设置为GPRS连接，接入点为”CMNET”。</p>
+<blockquote>
+<p>AT+CLPORT</p>
+</blockquote>
+<p>用于设置本地端口号。发送：AT+CLPORT=”TCP”,”8086”，即设置TCP连接本地端口号为8086。</p>
+<blockquote>
+<p>AT+CIPSTART</p>
+</blockquote>
+<p>用于建立TCP连接或注册UDP端口号。发送:AT+CIPSTART=”TCP”,”222.197.91.22”,”10005”，模块将建立一个TCP连接，连接目标地址为：222.197.91.22，连接端口号为10005，连接成功会返回：CONNECTOK。</p>
+<blockquote>
+<p>AT+CIPSEND</p>
+</blockquote>
+<p>用于发送数据。在连接成功后发送：AT+CIPSEND，模块返回：&gt;，此时可以输入要发送的数据，最大可以一次发送1352字节，数据输入完后，同发短信一样，输入十六进制的：1A(0X1A),启动发送数据。在数据发送完成后，模块返回：SENDOK，表示发送成功。</p>
+<blockquote>
+<p>AT+CIPSTATUS</p>
+</blockquote>
+<p>用于查询当前连接状态。发送:AT+CIPSTATUS，模块即返回当前连接状态。</p>
+<blockquote>
+<p>AT+CIPCLOSE</p>
+</blockquote>
+<p>用于关闭TCP/UDP连接。发送:AT+CIPCLOSE=1,即可快速关闭当前TCP/UDP连接。</p>
+<blockquote>
+<p>AT+CIFSR</p>
+</blockquote>
+<p>查询模块IP</p>
+<blockquote>
+<p>AT+CIPSHUT</p>
+</blockquote>
+<p>用于关闭移动场景。发送：AT+CIPSHUT，则可以关闭移动场景，关闭场景后连接状态为：IPINITIAL，可以通过发送：AT+CIPSTATUS查询。另外，在连接建立后，如果收到：+PDP：DEACT，则必须发送：AT+CIPSHUT，关闭场景后，才能实现重连。</p>
+<h2 id="SIM800C-建立与服务器的连接"><a href="#SIM800C-建立与服务器的连接" class="headerlink" title="SIM800C 建立与服务器的连接"></a>SIM800C 建立与服务器的连接</h2><p>使用端口助手向SIM800C发送以下命令<br>查询网络注册情况</p>
+<blockquote>
+<p>AT+CPIN?</p>
+</blockquote>
+<p>查询信号质量</p>
+<blockquote>
+<p>AT+CSQ</p>
+</blockquote>
+<p>查询GSM网络注册状态</p>
+<blockquote>
+<p>AT+CREG?</p>
+</blockquote>
+<p>查询GPRS网络注册状态</p>
+<blockquote>
+<p>AT+CGREG?</p>
+</blockquote>
+<p>使模块附着GPRS网络</p>
+<blockquote>
+<p>AT+CGATT=1</p>
+</blockquote>
+<p>设置透传模式</p>
+<blockquote>
+<p>AT+CIPMODE=1</p>
+</blockquote>
+<p>设置APN=CMIOT</p>
+<blockquote>
+<p>AT+CSTT=CMIOT</p>
+</blockquote>
+<p>激活移动场景，建立无线连接</p>
+<blockquote>
+<p>AT+CIICR</p>
+</blockquote>
+<p>获取模块IP地址</p>
+<blockquote>
+<p>AT+CIFSR</p>
+</blockquote>
+<p>建立TCP连接，连接到IP：222.197.91.22，连接端口为：10005。</p>
+<blockquote>
+<p>AT+CIPSTART=”TCP”,”222.197.91.22”,”10005”</p>
+</blockquote>
+<p>此时SIM800C模块向串口返回CONNECT OK，现在可以进行数据交互，我们通过远程服务器向模块发送“Hello SIM800! This massage from server.” 我们的模块将会成功收到来自服务器的信息。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">Kevin</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://while.run/2017/08/21/sim800c/">https://while.run/2017/08/21/sim800c/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://while.run">WHILE.RUN</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%89%A9%E8%81%94%E7%BD%91%E7%A1%AC%E4%BB%B6/">物联网硬件</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/11/21/arduino-car/"><i class="fa fa-chevron-left">  </i><span>模块应用：Arduino避障小车</span></a></div><div class="next-post pull-right"><a href="/2016/10/21/hexo-setup/"><span>精简教程：Hexo+GitPage搭建个人博客</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(/img/site/foot.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2018 - 2019 By Kevin</div><div class="framework-info"><span>驱动 - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script></body></html>
